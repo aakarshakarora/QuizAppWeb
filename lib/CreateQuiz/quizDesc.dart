@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
 
 import 'package:quiz_web_app/CreateQuiz/addQuestion.dart';
+import 'package:quiz_web_app/facultyDashboard.dart';
+
 
 
 class QuizDesc extends StatefulWidget {
@@ -18,6 +22,33 @@ class _QuizDescState extends State<QuizDesc> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   static String userID;
+
+
+  void goFullScreen() {
+    document.documentElement.requestFullscreen();
+  }
+
+
+  var loaded ;
+
+
+  //
+  // void fxTest()
+  // {
+  //
+  //
+  // }
+  //
+  // dynamic testfx()
+  // {
+  //
+  //   return    Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => FacultyDashboard()),
+  //   );
+  // }
+
 
   //Check Current User
   String getCurrentUser() {
@@ -51,8 +82,9 @@ class _QuizDescState extends State<QuizDesc> {
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   Random _rnd = Random();
 
-  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  String getRandomString(int length) =>
+      String.fromCharCodes(Iterable.generate(
+          length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   String accessCode;
   List questionCountList = [
@@ -158,7 +190,10 @@ class _QuizDescState extends State<QuizDesc> {
                 fontWeight: FontWeight.w500,
                 color: Colors.black)),
         Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Slider(
               min: 1,
               max: 50,
@@ -218,8 +253,11 @@ class _QuizDescState extends State<QuizDesc> {
 
   @override
   Widget build(BuildContext context) {
+
+    //window.onload=()=>{document.addEventListener("visibilitychange",fxTest())}  ;
+
     DocumentReference docRef =
-        FirebaseFirestore.instance.collection('Faculty').doc(userID);
+    FirebaseFirestore.instance.collection('Faculty').doc(userID);
     setState(() {
       print(docRef.toString());
     });
@@ -231,7 +269,7 @@ class _QuizDescState extends State<QuizDesc> {
         title: Text(
           'Create Quiz',
           style:
-              TextStyle(fontFamily: 'PoppinsBold', fontWeight: FontWeight.bold),
+          TextStyle(fontFamily: 'PoppinsBold', fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -245,6 +283,18 @@ class _QuizDescState extends State<QuizDesc> {
                 _buildSubjectNameField(),
                 _scoreCountSlider(),
                 _questionCount(),
+
+                // SecureApplication(
+                //   onNeedUnlock: (secure) {
+                //     print(
+                //       'need unlock maybe use biometric to confirm and then use sercure.unlock()');
+                //
+                //     return null;
+                //   },
+                //   child: StartPage(),
+                // ),
+
+                //SecureApplicationState(authenticated: true,paused: true,locked: true,secured: true),
 
                 //SizedBox(width: 30),
                 Row(
@@ -264,7 +314,7 @@ class _QuizDescState extends State<QuizDesc> {
                               height: 41,
                               decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
+                                BorderRadius.all(Radius.circular(12)),
 //                                border: Border.all(
 //                                    color: Color.fromRGBO(248, 248, 255, 1)),
                               ),
@@ -318,7 +368,7 @@ class _QuizDescState extends State<QuizDesc> {
                                 child: Text(
                                     startDate != null
                                         ? DateFormat('d MMM y on h:mm a')
-                                            .format(startDate)
+                                        .format(startDate)
                                         : 'Select Date & Time',
                                     style: TextStyle(
                                         fontFamily: 'Poppins',
@@ -329,12 +379,12 @@ class _QuizDescState extends State<QuizDesc> {
                             ),
                             startDateError
                                 ? Text(
-                                    "Start Time is Required",
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.red,
-                                        fontSize: 11),
-                                  )
+                              "Start Time is Required",
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.red,
+                                  fontSize: 11),
+                            )
                                 : Container(),
                           ],
                         ),
@@ -345,7 +395,7 @@ class _QuizDescState extends State<QuizDesc> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                         border:
-                            Border.all(color: Color.fromRGBO(248, 248, 255, 1)),
+                        Border.all(color: Color.fromRGBO(248, 248, 255, 1)),
                       ),
                       // ignore: deprecated_member_use
                       child: FlatButton(
@@ -358,7 +408,7 @@ class _QuizDescState extends State<QuizDesc> {
                                 endDate = value.add(Duration(
                                     hours: endDate != null ? endDate.hour : 0,
                                     minutes:
-                                        endDate != null ? endDate.minute : 0));
+                                    endDate != null ? endDate.minute : 0));
                               });
                             } else if (startDate != null) {
                               setState(() {
@@ -422,7 +472,7 @@ class _QuizDescState extends State<QuizDesc> {
                                   setState(() {
                                     endDate = value.add(Duration(
                                         hours:
-                                            endDate != null ? endDate.hour : 0,
+                                        endDate != null ? endDate.hour : 0,
                                         minutes: endDate != null
                                             ? endDate.minute
                                             : 0));
@@ -439,7 +489,7 @@ class _QuizDescState extends State<QuizDesc> {
                                     var newDate = endDate.add(Duration(
                                         hours: value.hour - endDate.hour,
                                         minutes:
-                                            value.minute - endDate.minute));
+                                        value.minute - endDate.minute));
                                     if (startDate != null &&
                                         newDate.isAfter(startDate)) {
                                       setState(() {
@@ -459,7 +509,7 @@ class _QuizDescState extends State<QuizDesc> {
                             child: Text(
                                 endDate != null
                                     ? DateFormat('d MMM y on h:mm a')
-                                        .format(endDate)
+                                    .format(endDate)
                                     : 'Select Date & Time',
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
@@ -470,12 +520,12 @@ class _QuizDescState extends State<QuizDesc> {
                         ),
                         endDateError
                             ? Text(
-                                "End Time is Required",
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.red,
-                                    fontSize: 11),
-                              )
+                          "End Time is Required",
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Colors.red,
+                              fontSize: 11),
+                        )
                             : Container(),
                       ],
                     ),
@@ -532,8 +582,9 @@ class _QuizDescState extends State<QuizDesc> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AddQuestion(
-                                          accessCode, questionCount)),
+                                      builder: (context) =>
+                                          AddQuestion(
+                                              accessCode, questionCount)),
                                 );
                               }).catchError((onError) {
                                 displayError(context, onError);
@@ -565,9 +616,9 @@ class _QuizDescState extends State<QuizDesc> {
   _displaySnackBar(BuildContext context) {
     final snackBar = SnackBar(
         content: Text(
-      'Desciption Added Successfully',
-      style: TextStyle(fontFamily: 'Poppins'),
-    ));
+          'Desciption Added Successfully',
+          style: TextStyle(fontFamily: 'Poppins'),
+        ));
     // ignore: deprecated_member_use
     Scaffold.of(context).showSnackBar(snackBar);
   }
@@ -575,9 +626,9 @@ class _QuizDescState extends State<QuizDesc> {
   displayError(BuildContext context, onError) {
     final snackBar = SnackBar(
         content: Text(
-      onError,
-      style: TextStyle(fontFamily: 'Poppins'),
-    ));
+          onError,
+          style: TextStyle(fontFamily: 'Poppins'),
+        ));
   }
 
   //Select Start Date
@@ -591,11 +642,11 @@ class _QuizDescState extends State<QuizDesc> {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: ColorScheme.dark(
-                // primary: Colors.blue,
-                // onPrimary: white,
-                // surface: peach,
-                // onSurface: white,
-                ),
+              // primary: Colors.blue,
+              // onPrimary: white,
+              // surface: peach,
+              // onSurface: white,
+            ),
             // dialogBackgroundColor: darkerBlue,
           ),
           child: child,
@@ -616,11 +667,11 @@ class _QuizDescState extends State<QuizDesc> {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: ColorScheme.dark(
-                // primary: darkerBlue,
-                // onPrimary: white,
-                // surface: peach,
-                // onSurface: darkerBlue,
-                ),
+              // primary: darkerBlue,
+              // onPrimary: white,
+              // surface: peach,
+              // onSurface: darkerBlue,
+            ),
           ),
           child: child,
         );
@@ -640,11 +691,11 @@ class _QuizDescState extends State<QuizDesc> {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: ColorScheme.dark(
-                // primary: peach,
-                // onPrimary: white,
-                // surface: peach,
-                // onSurface: white,
-                ),
+              // primary: peach,
+              // onPrimary: white,
+              // surface: peach,
+              // onSurface: white,
+            ),
             // dialogBackgroundColor: darkerBlue,
           ),
           child: child,
@@ -660,8 +711,33 @@ class _QuizDescState extends State<QuizDesc> {
     super.initState();
     userID = getCurrentUser();
     accessCode = getRandomString(5);
+    goFullScreen();
+
+   // window.onload=()=>{document.addEventListener("visibilitychange",fxTest())}  ;
+
+
+
+
+
   }
 
+
+  dynamic fxTest() {
+
+    if (document.visibilityState == 'hidden' ||document.visibilityState == 'prerender') {
+
+      print("Hi");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                FacultyDashboard()),
+      );
+    } else {
+print("Bye");
+
+    }
+  }
   @override
   void dispose() {
     super.dispose();

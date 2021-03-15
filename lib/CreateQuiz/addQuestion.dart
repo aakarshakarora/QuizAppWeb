@@ -16,6 +16,8 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
+
+
   bool imagePresent;
   @override
   void initState() {
@@ -230,6 +232,7 @@ class _AddQuestionState extends State<AddQuestion> {
                 _buildOption2Field(),
                 _buildOption3Field(),
                 _buildOption4Field(),
+
                 SizedBox(
                   height: 100,
                 ),
