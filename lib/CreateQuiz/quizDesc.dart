@@ -702,11 +702,21 @@ class _QuizDescState extends State<QuizDesc> {
     super.initState();
     userID = getCurrentUser();
     accessCode = getRandomString(5);
-    goFullScreen();
     window.onLoad;
     document.addEventListener("visibilitychange", fxTest());
     document.onVisibilityChange;
 
+    print(document.onFullscreenChange.take(2));
+    print(document.fullscreenEnabled==true);
+    document.onFullscreenChange.listen((event) {
+      document.addEventListener("visibilitychange", fxTest());
+    });
+    document.onAbort.listen((event) {
+      document.addEventListener("visibilitychange", fxTest());
+    });
+    document.onFullscreenError.listen((event) {
+      document.addEventListener("visibilitychange", fxTest());
+    });
 
     // if(window.innerWidth == window.screen.width && window.innerHeight == window.screen.height) {
     //   print("Full");
@@ -714,7 +724,6 @@ class _QuizDescState extends State<QuizDesc> {
     // } else {
     //   print("Not Full");
     // }
-
   }
 
   dynamic fxTest() {
@@ -726,9 +735,11 @@ class _QuizDescState extends State<QuizDesc> {
         MaterialPageRoute(builder: (context) => FacultyDashboard()),
       );
     } else {
-      print("Bye");
+
       print(document.visibilityState);
-      print(document.onVisibilityChange.listen((event) {  document.addEventListener("visibilitychange", fxTest());}));
+      print(document.onVisibilityChange.listen((event) {
+        document.addEventListener("visibilitychange", fxTest());
+      }));
     }
   }
 
@@ -737,12 +748,20 @@ class _QuizDescState extends State<QuizDesc> {
     super.dispose();
     subjectNameController.dispose();
     descriptionController.dispose();
-    goFullScreen();
     window.onLoad;
     document.addEventListener("visibilitychange", fxTest());
     document.onVisibilityChange;
 
-
-
+    print(document.onFullscreenChange.take(2));
+    print(document.fullscreenEnabled==true);
+    document.onFullscreenChange.listen((event) {
+      document.addEventListener("visibilitychange", fxTest());
+    });
+    document.onAbort.listen((event) {
+      document.addEventListener("visibilitychange", fxTest());
+    });
+    document.onFullscreenError.listen((event) {
+      document.addEventListener("visibilitychange", fxTest());
+    });
   }
 }

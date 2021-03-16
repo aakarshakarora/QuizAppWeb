@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:quiz_web_app/PreviewQuiz/previewQuiz.dart';
+import 'package:quiz_web_app/Utilities/quizDetailModel.dart';
 
 
 class ViewQuizDesc extends StatefulWidget {
@@ -16,7 +17,7 @@ class _ViewQuizDescState extends State<ViewQuizDesc> {
       .collection('Quiz')
       //.where("startDate",isLessThan: new DateTime.now())
       .snapshots();
-
+  List<QuizDetailModel> reqDocs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,13 +35,15 @@ class _ViewQuizDescState extends State<ViewQuizDesc> {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
-                    var reqDocs =  opSnapshot.data.documents;
+                    reqDocs =  opSnapshot.data.documents
+                        .map((doc) => QuizDetailModel.fromMap(doc))
+                        .toList();
                     print('length ${reqDocs.length}');
                     return ListView.builder(
                       itemCount: reqDocs.length,
                       itemBuilder: (ctx, index) {
                         if (reqDocs[index]
-                            .get('Creator')
+                            .Creator
                             .toString()
                             .contains(userId))
                           return ViewDetails(reqDocs[index]);
