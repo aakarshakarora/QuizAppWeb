@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:quiz_web_app/PreviewQuiz/previewQuiz.dart';
-import 'package:quiz_web_app/Utilities/quizDetailModel.dart';
 
 
 class ViewQuizDesc extends StatefulWidget {
@@ -15,9 +14,9 @@ class _ViewQuizDescState extends State<ViewQuizDesc> {
   final userId = FirebaseAuth.instance.currentUser.uid;
   var firestoreDB = FirebaseFirestore.instance
       .collection('Quiz')
-      //.where("startDate",isLessThan: new DateTime.now())
+  //.where("startDate",isLessThan: new DateTime.now())
       .snapshots();
-  List<QuizDetailModel> reqDocs;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,15 +34,13 @@ class _ViewQuizDescState extends State<ViewQuizDesc> {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
-                    reqDocs =  opSnapshot.data.documents
-                        .map((doc) => QuizDetailModel.fromMap(doc))
-                        .toList();
+                    var reqDocs =  opSnapshot.data.documents;
                     print('length ${reqDocs.length}');
                     return ListView.builder(
                       itemCount: reqDocs.length,
                       itemBuilder: (ctx, index) {
                         if (reqDocs[index]
-                            .Creator
+                            .get('Creator')
                             .toString()
                             .contains(userId))
                           return ViewDetails(reqDocs[index]);
@@ -79,12 +76,12 @@ class _ViewDetailsState extends State<ViewDetails> {
     final subjectName = widget.reqDoc.get("SubjectName");
     final maxScore = widget.reqDoc.get("MaxScore");
     final startDate =
-        (widget.reqDoc.get("startDate") as Timestamp).toDate().toString();
+    (widget.reqDoc.get("startDate") as Timestamp).toDate().toString();
     final endDate =
-        (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
+    (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
 
     message =
-        "Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
+    "Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
 
     return Container(
       padding: const EdgeInsets.all(10),
@@ -159,7 +156,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                   child: Text('Click Here'),
                   onPressed: () async {
                     var response =
-                        await FlutterShareMe().shareToSystem(msg: message);
+                    await FlutterShareMe().shareToSystem(msg: message);
                     if (response == 'success') {
                       print('navigate success');
                     }
