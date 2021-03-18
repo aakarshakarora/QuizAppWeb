@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quiz_web_app/startPage.dart';
+import 'package:quiz_app/Pages/startPage.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,26 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Data>(
-      create: (context) => Data(),
-      child: MaterialApp(
+    return MaterialApp(
         title: 'Proctored Quiz App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: 'Poppins'
         ),
         debugShowCheckedModeBanner: false,
         home: StartPage(),
-      ),
+
     );
-  }
-}
-
-class Data extends ChangeNotifier {
-  int questionCount = 0;
-
-  void changeCount(int newCount) {
-    questionCount = newCount;
-    notifyListeners();
   }
 }

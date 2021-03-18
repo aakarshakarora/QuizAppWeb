@@ -9,7 +9,6 @@ Widget roundedButton({BuildContext context,String text,Function onPressed,Color 
         borderRadius: BorderRadius.all(Radius.circular(30)),
         color: color
       ),
-      // ignore: deprecated_member_use
       child: FlatButton(
         textColor: Colors.white,
         padding: EdgeInsets.all(10.0),

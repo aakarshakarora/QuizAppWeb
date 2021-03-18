@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_web_app/Utilities/buttons.dart';
 
-
+import 'package:quiz_app/Utilities/buttons.dart';
 
 class PreviewQuiz extends StatefulWidget {
   final String subjectName, accessCode;
@@ -212,7 +211,11 @@ class _PreviewQuestionTileState extends State<PreviewQuestionTile>
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Q${widget.index + 1} ${widget.reqDoc.get("Ques")}"),
+          Text("Q${widget.index + 1} ${widget.reqDoc.get("Ques")}",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 20
+          ),),
           ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -224,7 +227,10 @@ class _PreviewQuestionTileState extends State<PreviewQuestionTile>
                         value: options[index],
                         groupValue: selectedValue,
                         onChanged: (value) {}),
-                    Text(options[index]),
+                    Flexible(child: Text(options[index],
+                      style: TextStyle(
+                          fontSize: 17
+                      ),)),
                   ],
                 );
               }),

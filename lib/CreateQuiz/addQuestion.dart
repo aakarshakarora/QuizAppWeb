@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_web_app/Utilities/buttons.dart';
-import 'package:quiz_web_app/facultyDashboard.dart';
+import 'package:quiz_app/Dashboard/F_Dashboard/dashboardFaculty.dart';
+import 'package:quiz_app/Utilities/buttons.dart';
 
 int currentCount = 1;
 
@@ -16,21 +16,19 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
-
-
   bool imagePresent;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    imagePresent=false;
+    imagePresent = false;
   }
-
 
   final TextEditingController _imageLink = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _buildQuestionController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _option1Controller = TextEditingController();
   final TextEditingController _option2Controller = TextEditingController();
   final TextEditingController _option3Controller = TextEditingController();
@@ -85,6 +83,7 @@ class _AddQuestionState extends State<AddQuestion> {
       ),
     );
   }
+
   _buildOption1Field() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
@@ -185,7 +184,6 @@ class _AddQuestionState extends State<AddQuestion> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,7 +197,6 @@ class _AddQuestionState extends State<AddQuestion> {
                 Text(currentCount.toString() +
                     "/" +
                     widget.questionCount.toString()),
-
                 Container(
                   padding: EdgeInsets.all(15.0),
                   child: Row(
@@ -211,7 +208,7 @@ class _AddQuestionState extends State<AddQuestion> {
                           value: true,
                           onChanged: (v) {
                             setState(() {
-                              imagePresent=v;
+                              imagePresent = v;
                             });
                           }),
                       Text("No"),
@@ -220,19 +217,22 @@ class _AddQuestionState extends State<AddQuestion> {
                           value: false,
                           onChanged: (v) {
                             setState(() {
-                              imagePresent=v;
+                              imagePresent = v;
                             });
                           }),
                     ],
                   ),
                 ),
-                imagePresent==true?_buildImageCheck():Container(height: 0,),
+                imagePresent == true
+                    ? _buildImageCheck()
+                    : Container(
+                        height: 0,
+                      ),
                 _buildQuestionField(),
                 _buildOption1Field(),
                 _buildOption2Field(),
                 _buildOption3Field(),
                 _buildOption4Field(),
-
                 SizedBox(
                   height: 100,
                 ),
@@ -240,85 +240,85 @@ class _AddQuestionState extends State<AddQuestion> {
                   children: [
                     currentCount == widget.questionCount
                         ? roundedButton(
-                        color: Colors.purple,
-                        context: context,
-                        text: 'Submit',
-                        onPressed: () async {
-                          print(_buildQuestionController.text);
-                          print(_option1Controller.text);
-                          print(_option2Controller.text);
-                          print(_option3Controller.text);
-                          print(_option4Controller.text);
-                          if (_formKey.currentState.validate()) {
-                            FirebaseFirestore.instance
-                                .collection('Quiz')
-                                .doc(widget.accessCode)
-                                .collection(widget.accessCode)
-                                .add({
-                              "01": _option1Controller.text,
-                              "02": _option2Controller.text,
-                              "03": _option3Controller.text,
-                              "04": _option4Controller.text,
-                              "Ques": _buildQuestionController.text,
-                              "imgPresent": imagePresent,
-                              "imgURL": _imageLink.text
-                            }).then((_) {
-                              //_displaySnackBar(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        FacultyDashboard()),
-                              );
-                            }).catchError((error) {
-                              print(error);
-                            });
-                          }
-                        })
+                            color: Colors.purple,
+                            context: context,
+                            text: 'Submit',
+                            onPressed: () async {
+                              print(_buildQuestionController.text);
+                              print(_option1Controller.text);
+                              print(_option2Controller.text);
+                              print(_option3Controller.text);
+                              print(_option4Controller.text);
+                              if (_formKey.currentState.validate()) {
+                                FirebaseFirestore.instance
+                                    .collection('Quiz')
+                                    .doc(widget.accessCode)
+                                    .collection(widget.accessCode)
+                                    .add({
+                                  "01": _option1Controller.text,
+                                  "02": _option2Controller.text,
+                                  "03": _option3Controller.text,
+                                  "04": _option4Controller.text,
+                                  "Ques": _buildQuestionController.text,
+                                  "imgPresent": imagePresent,
+                                  "imgURL": _imageLink.text
+                                }).then((_) {
+                                  //_displaySnackBar(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            FacultyDashboard()),
+                                  );
+                                }).catchError((error) {
+                                  print(error);
+                                });
+                              }
+                            })
                         : Container(),
                     currentCount < widget.questionCount
                         ? roundedButton(
-                        color: Colors.purple,
-                        context: context,
-                        text: 'Add Question',
-                        onPressed: () async {
-                          print(_buildQuestionController.value);
-                          print(_option1Controller.value);
-                          print(_option2Controller.value);
-                          print(_option3Controller.value);
-                          print(_option4Controller.value);
-                          if (_formKey.currentState.validate()) {
-                            FirebaseFirestore.instance
-                                .collection('Quiz')
-                                .doc(widget.accessCode)
-                                .collection(widget.accessCode)
-                                .add({
-                              "01": _option1Controller.text,
-                              "02": _option2Controller.text,
-                              "03": _option3Controller.text,
-                              "04": _option4Controller.text,
-                              "Ques": _buildQuestionController.text,
-                              "imgPresent": imagePresent,
-                              "imgURL": _imageLink.text
-                            }).then((_) {
-                              //_displaySnackBar(context);
-                              setState(() {
-                                currentCount++;
-                                print(currentCount);
-                                print(widget.questionCount);
-                              });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => (AddQuestion(
-                                        widget.accessCode,
-                                        widget.questionCount))),
-                              );
-                            }).catchError((error) {
-                              print(error);
-                            });
-                          }
-                        })
+                            color: Colors.purple,
+                            context: context,
+                            text: 'Add Question',
+                            onPressed: () async {
+                              print(_buildQuestionController.value);
+                              print(_option1Controller.value);
+                              print(_option2Controller.value);
+                              print(_option3Controller.value);
+                              print(_option4Controller.value);
+                              if (_formKey.currentState.validate()) {
+                                FirebaseFirestore.instance
+                                    .collection('Quiz')
+                                    .doc(widget.accessCode)
+                                    .collection(widget.accessCode)
+                                    .add({
+                                  "01": _option1Controller.text,
+                                  "02": _option2Controller.text,
+                                  "03": _option3Controller.text,
+                                  "04": _option4Controller.text,
+                                  "Ques": _buildQuestionController.text,
+                                  "imgPresent": imagePresent,
+                                  "imgURL": _imageLink.text
+                                }).then((_) {
+                                  _displaySnackBar(context);
+                                  setState(() {
+                                    currentCount++;
+                                    print(currentCount);
+                                    print(widget.questionCount);
+                                  });
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => (AddQuestion(
+                                            widget.accessCode,
+                                            widget.questionCount))),
+                                  );
+                                }).catchError((error) {
+                                  print(error);
+                                });
+                              }
+                            })
                         : Container(),
                   ],
                 )
@@ -330,13 +330,12 @@ class _AddQuestionState extends State<AddQuestion> {
     );
   }
 
-// _displaySnackBar(BuildContext context) {
-//   final snackBar = SnackBar(
-//       content: Text(
-//     'Question Added Successfully',
-//     style: TextStyle(fontFamily: 'Poppins'),
-//   ));
-//   // ignore: deprecated_member_use
-//   Scaffold.of(context).showSnackBar(snackBar);
-// }
+  _displaySnackBar(BuildContext context) {
+    final snackBar = SnackBar(
+        content: Text(
+      'Question Added Successfully',
+      style: TextStyle(fontFamily: 'Poppins'),
+    ));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
