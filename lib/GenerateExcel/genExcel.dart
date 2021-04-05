@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'dart:convert';
+import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart' as open_file;
@@ -137,18 +138,27 @@ class _CreateExcelState extends State<CreateExcel> {
     //Dispose the document.
     workbook.dispose();
 
+    AnchorElement(
+        href:
+        "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(bytes)}")
+      ..setAttribute("download", "output.xlsx")
+      ..click();
+
     //Get the storage folder location using path_provider package.
-    final Directory directory =
-    await path_provider.getApplicationDocumentsDirectory();
-    final String path = directory.path;
-    final File file = File('$path/$subjectName $code.xlsx');
-    await file.writeAsBytes(bytes);
+    // final Directory directory =
+    // await path_provider.getApplicationDocumentsDirectory();
+    // final String path = directory.path;
+    // final File file = File('$path/$subjectName $code.xlsx');
+    // await file.writeAsBytes(bytes);
 
     //Launch the file (used open_file package)
 
-    await open_file.OpenFile.open('$path/$subjectName $code.xlsx');
-
-    print("File Saved at:" + path);
+    // await open_file.OpenFile.open('$path/$subjectName $code.xlsx');
+    //
+    //
+    //
+    //
+    // print("File Saved at:" + path);
     print("Code is: $accessCode");
     print("Result is: $code");
   }
