@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:quiz_app/PreviewQuiz/previewQuiz.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewQuizDesc extends StatefulWidget {
   @override
@@ -79,6 +81,27 @@ class _ViewDetailsState extends State<ViewDetails> {
     final endDate =
         (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
 
+    Future<void> send(String message, String subject) async {
+      final Email email = Email(
+        body: "Greetings of the Day!!\n" + message,
+        subject: "$subject Quiz Details",
+        recipients: [],
+        cc: [],
+        isHTML: false,
+      );
+
+      String platformResponse;
+
+      try {
+        await FlutterEmailSender.send(email);
+        platformResponse = 'success';
+      } catch (error) {
+        platformResponse = error.toString();
+      }
+
+      if (!mounted) return;
+    }
+
     message =
         "Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
 
@@ -152,11 +175,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                 ElevatedButton(
                   child: Text('Share Quiz'),
                   onPressed: () async {
-                    var response =
-                        await FlutterShareMe().shareToSystem(msg: message);
-                    if (response == 'success') {
-                      print('navigate success');
-                    }
+                 send(message, subjectName);
                   },
                 ),
                 ElevatedButton(
