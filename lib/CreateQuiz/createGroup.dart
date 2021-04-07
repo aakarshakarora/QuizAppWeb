@@ -28,79 +28,98 @@ class _CreateGroupState extends State<CreateGroup> {
     currentUser = getCurrentUser();
   }
 
-  final accessCodeController = TextEditingController();
-
+  final groupNameController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Quiz Group"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text("Create New Group"),
-            TextFormField(
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold),
-              decoration: InputDecoration(
-                  labelText: 'Enter Group Name:',
-                  labelStyle: TextStyle(
-                    fontSize: 17,
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text("Create New Group"),
+              TextFormField(
+                style: TextStyle(
                     fontFamily: 'Poppins',
-                  )),
-              keyboardType: TextInputType.text,
-              controller: accessCodeController,
-            ),
-            // ignore: deprecated_member_use
-            FlatButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            AddStudent(accessCodeController.text)),
-                  );
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                    labelText: 'Enter Group Name:',
+                    labelStyle: TextStyle(
+                      fontSize: 17,
+                      fontFamily: 'Poppins',
+                    )),
+                keyboardType: TextInputType.text,
+                controller: groupNameController,
+                // ignore: missing_return
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Field is required';
+                  }
                 },
-                child: Text("Create Group")),
-            SizedBox(
-              height: 20,
-            ),
-            Text('Old Group'),
-            Expanded(
-              child: Container(
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('Faculty')
-                      .doc(currentUser)
-                      .collection('QuizGroup')
-                      .snapshots(),
-                  builder: (ctx, opSnapshot) {
-                    if (opSnapshot.connectionState == ConnectionState.waiting)
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    final reqDocs = opSnapshot.data.documents;
-                    print('length ${reqDocs.length}');
-                    return ListView.builder(
-                      itemCount: reqDocs.length,
-                      itemBuilder: (ctx, index) {
-                        if (reqDocs != null)
-                          return GroupNameInfo(reqDocs[index]);
-                        return Container(
-                          height: 0,
-                        );
-                      },
+              ),
+              // ignore: deprecated_member_use
+              FlatButton(
+                  onPressed: () {
+                      if(_formKey.currentState.validate()){
+                        setState(() {
+                          FirebaseFirestore.instance
+                              .collection('Faculty')
+                              .doc(currentUser).collection('QuizGroup').doc(groupNameController.text)
+                              .set({
+                            "AllottedStudent": null
+                          });
+                        });
+                      }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AddStudent(groupNameController.text)),
                     );
                   },
+                  child: Text("Create Group")),
+              SizedBox(
+                height: 20,
+              ),
+              Text('Old Group'),
+              Expanded(
+                child: Container(
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Faculty')
+                        .doc(currentUser)
+                        .collection('QuizGroup')
+                        .snapshots(),
+                    builder: (ctx, opSnapshot) {
+                      if (opSnapshot.connectionState == ConnectionState.waiting)
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      final reqDocs = opSnapshot.data.documents;
+                      print('length ${reqDocs.length}');
+                      return ListView.builder(
+                        itemCount: reqDocs.length,
+                        itemBuilder: (ctx, index) {
+                          if (reqDocs != null)
+                            return GroupNameInfo(reqDocs[index]);
+                          return Container(
+                            height: 0,
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

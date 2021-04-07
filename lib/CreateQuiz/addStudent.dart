@@ -66,7 +66,7 @@ class _AddStudentState extends State<AddStudent> {
                       itemCount: reqDocs.length,
                       itemBuilder: (ctx, index) {
                         if (opSnapshot.hasData)
-                          return ViewDetails(reqDocs[index], currentUser.uid,widget.groupName);
+                          return ViewDetails(reqDoc:reqDocs[index], userID:currentUser.uid,groupName:widget.groupName);
                         return Container(
                           height: 0,
                         );
@@ -86,7 +86,7 @@ class ViewDetails extends StatefulWidget {
   final String userID;
   final String groupName;
 
-  ViewDetails(this.reqDoc, this.userID,this.groupName);
+  ViewDetails({this.reqDoc, this.userID,this.groupName});
 
   @override
   _ViewDetailsState createState() => _ViewDetailsState();
@@ -171,7 +171,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                   FirebaseFirestore.instance
                                       .collection('Faculty')
                                       .doc(widget.userID).collection('QuizGroup').doc(widget.groupName)
-                                      .set({
+                                      .update({
                                     "AllottedStudent": FieldValue.arrayUnion([userID])
                                   });
                                   print(userID);
