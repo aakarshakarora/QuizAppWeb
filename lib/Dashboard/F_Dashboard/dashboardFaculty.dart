@@ -8,7 +8,7 @@ import 'package:quiz_app/MyProfile/F_Profile/profileFaculty.dart';
 import 'package:quiz_app/Pages/FuturePage.dart';
 import 'package:quiz_app/Pages/startPage.dart';
 import 'package:quiz_app/PreviewQuiz/previewQuizDesc.dart';
-import 'package:quiz_app/CreateQuiz/quizDesc.dart';
+
 
 
 import 'package:url_launcher/url_launcher.dart';
@@ -240,7 +240,7 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => QuizDesc()),
+                                  builder: (context) => CreateGroup()),
                             );
                           }
                           if (index == 1) {
@@ -255,7 +255,7 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CreateGroup()),
+                                  builder: (context) => CreateExcel()),
                             );
                           }
 
