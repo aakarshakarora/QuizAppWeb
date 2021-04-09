@@ -1,10 +1,9 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:quiz_app/PreviewQuiz/previewQuiz.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class ViewQuizDesc extends StatefulWidget {
   @override
@@ -81,29 +80,11 @@ class _ViewDetailsState extends State<ViewDetails> {
     final endDate =
         (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
 
-    Future<void> send(String message, String subject) async {
-      final Email email = Email(
-        body: "Greetings of the Day!!\n" + message,
-        subject: "$subject Quiz Details",
-        recipients: [],
-        cc: [],
-        isHTML: false,
-      );
 
-      String platformResponse;
 
-      try {
-        await FlutterEmailSender.send(email);
-        platformResponse = 'success';
-      } catch (error) {
-        platformResponse = error.toString();
-      }
-
-      if (!mounted) return;
-    }
 
     message =
-        "Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
+        " Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
 
     return Container(
       padding: const EdgeInsets.all(10),
@@ -173,9 +154,34 @@ class _ViewDetailsState extends State<ViewDetails> {
                   ],
                 ),
                 ElevatedButton(
-                  child: Text('Share Quiz'),
-                  onPressed: () async {
-                 send(message, subjectName);
+                  child: Text('Share Info'),
+                  onPressed: ()  {
+
+                    final snackBar = SnackBar(
+                      content: Text('Information Copied'),
+                      action: SnackBarAction(
+                        label: 'Okay',
+                        onPressed: () {},
+                      ),
+                    );
+
+                    FlutterClipboard.copy(message).then(( value ) =>
+                        print('copied'));
+
+                    // ignore: deprecated_member_use
+                    Scaffold.of(context).showSnackBar(snackBar);
+                   {
+                      final snackBar = SnackBar(
+                        content: Text('Information Copied'),
+                        action: SnackBarAction(
+                          label: 'Okay',
+                          onPressed: () {},
+                        ),
+                      );
+                      // ignore: deprecated_member_use
+                      Scaffold.of(context).showSnackBar(snackBar);
+                    };
+
                   },
                 ),
                 ElevatedButton(
