@@ -79,6 +79,8 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
   Timestamp sTime, eTime,cTime;
   DateTime res1, res2;
   bool attempted = false;
+  static bool  groupCheck;
+  List studentGroup;
 
   int score = 0, tabSwitch = 0;
   final userId = FirebaseAuth.instance.currentUser.uid;
@@ -138,6 +140,30 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
       });
     });
   }
+  _groupCheck(DocumentReference documentReference) async {
+    await documentReference.get().then((value) {
+      studentGroup = value.data()['AllottedStudent'];
+    });
+
+    if(studentGroup.contains(uId))
+    {
+      print("Yes, It contains UID");
+      setState(() {
+        groupCheck=true;
+      });
+
+
+    }
+
+    else{
+      print("No,It doesn't UID");
+      setState(() {
+        groupCheck=false;
+      });
+      print(groupCheck);
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +175,7 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
         child: Container(
           child: FutureBuilder<DocumentSnapshot>(
               future:
-                  FirebaseFirestore.instance.collection('Quiz').doc(code).get(),
+              FirebaseFirestore.instance.collection('Quiz').doc(code).get(),
               builder: (BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (!snapshot.hasData && (facultyName == null)) {
@@ -160,9 +186,10 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                           "No Information Found!! \nKindly Enter Correct Access Code "));
                 } else {
                   Map<String, dynamic> data = snapshot.data.data();
-
                   DocumentReference documentReference = data['Creator'];
+                  DocumentReference groupRef=data['QuizGroup'];
                   _getFacultyName(documentReference);
+                  _groupCheck(groupRef);
                   return Column(
                     children: [
                       Text('Subject Name:' + data['SubjectName']),
@@ -174,6 +201,7 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                       Text('End Time: ' +
                           (data['endDate'] as Timestamp).toDate().toString()),
                       Text("Creator Name:$facultyName "),
+                      groupCheck==true?Text("You are allowed to give Quiz"):Text("You are not allowed to give Quiz"),
                       TextButton(
                           onPressed: () async {
                             sTime = (data['startDate']);
@@ -188,7 +216,7 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                             print("End Date: $endTime");
                             print("Current Date: $currentTime");
 
-                            if (attempted == true) {
+                            if (attempted == true &&groupCheck==false) {
                               //print("This is being called");
                               Navigator.push(
                                 context,
@@ -218,12 +246,12 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                                   MaterialPageRoute(
                                       builder: (context) => AttemptQuiz(
                                         marksPerQuestion: data['MarksPerQuestion'],
-                                            subjectName: data['SubjectName'],
-                                            accessCode: code,
-                                            questionCount: data['QuestionCount'],
-                                            maximumScore: data['MaxScore'],
-                                            timeCount: endTime,
-                                          )),
+                                        subjectName: data['SubjectName'],
+                                        accessCode: code,
+                                        questionCount: data['QuestionCount'],
+                                        maximumScore: data['MaxScore'],
+                                        timeCount: endTime,
+                                      )),
                                 );
                               }
 

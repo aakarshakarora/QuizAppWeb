@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_app/CreateQuiz/createGroup.dart';
-import 'package:quiz_app/Dashboard/F_Dashboard/dashboardFaculty.dart';
 
-class AddStudent extends StatefulWidget {
+import 'createGroup.dart';
+class DeleteStudent extends StatefulWidget {
   final String groupName;
   final DocumentReference docRef;
 
-  AddStudent(this.groupName, this.docRef);
+  DeleteStudent(this.groupName, this.docRef);
 
   @override
-  _AddStudentState createState() => _AddStudentState();
+  _DeleteStudentState createState() => _DeleteStudentState();
 }
 
-class _AddStudentState extends State<AddStudent> {
+class _DeleteStudentState extends State<DeleteStudent> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final userId = FirebaseAuth.instance.currentUser.uid;
   User currentUser;
@@ -37,7 +36,7 @@ class _AddStudentState extends State<AddStudent> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.blue,
-            title: Text("Add Student in " + widget.groupName),
+            title: Text("Delete Student from " + widget.groupName),
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
@@ -53,6 +52,7 @@ class _AddStudentState extends State<AddStudent> {
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('Student')
+                      .where("GroupAdded",arrayContains: widget.docRef.toString())
                       .snapshots(),
                   builder: (ctx, opSnapshot) {
                     if (opSnapshot.connectionState == ConnectionState.waiting)
@@ -68,7 +68,7 @@ class _AddStudentState extends State<AddStudent> {
                           if (reqDocs[index]
                               .get('GroupAdded')
                               .contains(widget.docRef.toString()) ==
-                              false) {
+                              true) {
                             return ViewDetails(
                               reqDoc: reqDocs[index],
                               userID: currentUser.uid,
@@ -172,38 +172,44 @@ class _ViewDetailsState extends State<ViewDetails> {
                         GestureDetector(
                             child: MaterialButton(
                               onPressed: () {
-                                print("User ADDED");
+                                print("User DELETED");
 
                                 print(widget.userID);
                                 print(widget.groupName);
 
                                 print("Hello: " + widget.docRef.toString());
-                                setState(() {
-                                  FirebaseFirestore.instance
+                                setState(() async {
+                                  DocumentReference docRefFaculty = FirebaseFirestore.instance
                                       .collection('Faculty')
                                       .doc(widget.userID)
                                       .collection('QuizGroup')
-                                      .doc(widget.groupName)
-                                      .update({
-                                    "AllottedStudent":
-                                    FieldValue.arrayUnion([userID])
-                                  });
+                                      .doc(widget.groupName);
+                                  DocumentSnapshot docFaculty = await docRefFaculty.get();
+                                  List tagsFaculty = docFaculty.data()['AllottedStudent'];
+                                  if(tagsFaculty.contains(userID)==true){
+                                    docRefFaculty.update({
+                                      'AllottedStudent': FieldValue.arrayRemove([userID])
+                                    });
+                                  }
                                   print(userID);
-                                  FirebaseFirestore.instance
+                                  DocumentReference docRefStudent  = FirebaseFirestore.instance
                                       .collection('Student')
-                                      .doc(userID)
-                                      .update({
-                                    "GroupAdded": FieldValue.arrayUnion(
-                                        [widget.docRef.toString()])
-                                  });
+                                      .doc(userID);
+                                  DocumentSnapshot docStudent = await docRefStudent.get();
+                                  List tagsStudent = docStudent.data()['GroupAdded'];
+                                  if(tagsStudent.contains(widget.docRef.toString())==true){
+                                    docRefStudent.update({
+                                      'GroupAdded': FieldValue.arrayRemove([widget.docRef.toString()])
+                                    });
+                                  }
                                 });
                               },
-                              child: Icon(Icons.group_add),
+                              child: Icon(Icons.delete),
                             )),
                         Text("Add User",
-                        style: TextStyle(
-                          fontSize: 13
-                        ),)
+                          style: TextStyle(
+                              fontSize: 13
+                          ),)
                       ],
                     ),
                   ),
