@@ -142,18 +142,18 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
   }
   _groupCheck(DocumentReference documentReference) async {
     await documentReference.get().then((value) {
-       studentGroup = value.data()['AllottedStudent'];
+      studentGroup = value.data()['AllottedStudent'];
     });
 
     if(studentGroup.contains(uId))
-      {
-        print("Yes, It contains UID");
-        setState(() {
-          groupCheck=true;
-        });
+    {
+      print("Yes, It contains UID");
+      setState(() {
+        groupCheck=true;
+      });
 
 
-      }
+    }
 
     else{
       print("No,It doesn't UID");
@@ -175,7 +175,7 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
         child: Container(
           child: FutureBuilder<DocumentSnapshot>(
               future:
-                  FirebaseFirestore.instance.collection('Quiz').doc(code).get(),
+              FirebaseFirestore.instance.collection('Quiz').doc(code).get(),
               builder: (BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (!snapshot.hasData && (facultyName == null)) {
@@ -186,7 +186,6 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                           "No Information Found!! \nKindly Enter Correct Access Code "));
                 } else {
                   Map<String, dynamic> data = snapshot.data.data();
-
                   DocumentReference documentReference = data['Creator'];
                   DocumentReference groupRef=data['QuizGroup'];
                   _getFacultyName(documentReference);
@@ -224,9 +223,11 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                                 MaterialPageRoute(
                                     builder: (context) => StudentDashboard()),
                               );
-                            } else {
-                              if (startTime <= currentTime &&
-                                  endTime >= currentTime) {
+                            }
+
+                            else if (attempted == false &&groupCheck==false) {
+                              if (startTime <= currentTime && endTime >= currentTime)
+                              {
                                 FirebaseFirestore.instance
                                     .collection('Quiz')
                                     .doc(code)
@@ -247,12 +248,12 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                                   MaterialPageRoute(
                                       builder: (context) => AttemptQuiz(
                                         marksPerQuestion: data['MarksPerQuestion'],
-                                            subjectName: data['SubjectName'],
-                                            accessCode: code,
-                                            questionCount: data['QuestionCount'],
-                                            maximumScore: data['MaxScore'],
-                                            timeCount: endTime,
-                                          )),
+                                        subjectName: data['SubjectName'],
+                                        accessCode: code,
+                                        questionCount: data['QuestionCount'],
+                                        maximumScore: data['MaxScore'],
+                                        timeCount: endTime,
+                                      )),
                                 );
                               }
 

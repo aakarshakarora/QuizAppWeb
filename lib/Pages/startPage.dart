@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/Dashboard/F_Dashboard/dashboardFaculty.dart';
 import 'package:quiz_app/Login/F_Login/loginFaculty.dart';
 import 'package:quiz_app/Login/S_Login/loginStudent.dart';
 
