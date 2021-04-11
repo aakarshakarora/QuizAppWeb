@@ -5,13 +5,14 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:quiz_app/Dashboard/S_Dashboard/dashboardStudent.dart';
 import 'package:quiz_app/Pages/startPage.dart';
 import 'package:quiz_app/Register/S_Register/registerStudent.dart';
+import 'package:quiz_app/SplashScreen/splash.dart';
 
-class StudentLogin extends StatefulWidget {
+class UserLogin extends StatefulWidget {
   @override
-  _StudentLoginState createState() => _StudentLoginState();
+  _UserLoginState createState() => _UserLoginState();
 }
 
-class _StudentLoginState extends State<StudentLogin> {
+class _UserLoginState extends State<UserLogin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -73,7 +74,7 @@ class _StudentLoginState extends State<StudentLogin> {
           appBar: AppBar(
             backgroundColor: Colors.deepPurpleAccent,
             title: Text(
-              "Login Registered Student",
+              "Registered User Login",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -279,7 +280,7 @@ class _StudentLoginState extends State<StudentLogin> {
   }
 
   void _signInWithEmailAndPassword() async {
-    print("Signin is called");
+    print("SignIn is called");
     final FirebaseAuth _auth = FirebaseAuth.instance;
     try {
       final User user = (await _auth.signInWithEmailAndPassword(
@@ -295,7 +296,7 @@ class _StudentLoginState extends State<StudentLogin> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
-              return StudentDashboard();
+              return SplashScreen(text: "Logging You In....",);
             }),
           );
         });

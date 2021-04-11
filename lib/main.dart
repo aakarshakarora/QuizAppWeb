@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quiz_app/Pages/startPage.dart';
+import 'package:quiz_app/SplashScreen/splash.dart';
+
 
 import 'CreateGroup/F_View/createGroup.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             fontFamily: 'Poppins'),
         debugShowCheckedModeBanner: false,
-        home: StartPage(),
+        home: SplashScreen(),
       ),
     );
   }

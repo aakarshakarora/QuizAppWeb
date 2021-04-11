@@ -7,7 +7,7 @@ import 'package:quiz_app/CreateGroup/F_View/createGroup.dart';
 import 'package:quiz_app/MyProfile/F_Profile/profileFaculty.dart';
 import 'package:quiz_app/Pages/FuturePage.dart';
 import 'package:quiz_app/Pages/startPage.dart';
-import 'package:quiz_app/PreviewQuiz/previewQuizDesc.dart';
+import 'package:quiz_app/PreviewQuiz/previewQuizCreated.dart';
 import 'package:quiz_app/ViewResult/F_View/quizCreatedRecord.dart';
 
 

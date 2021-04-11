@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/Dashboard/F_Dashboard/dashboardFaculty.dart';
 import 'package:quiz_app/Login/F_Login/loginFaculty.dart';
-import 'package:quiz_app/Login/S_Login/loginStudent.dart';
+import 'package:quiz_app/Login/userLogin.dart';
+
 
 
 class StartPage extends StatelessWidget {
@@ -20,11 +20,11 @@ class StartPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StudentLogin()),
+                  MaterialPageRoute(builder: (context) => UserLogin()),
                 );
               },
               child: Text(
-                "Student",
+                "Login",
                 style: TextStyle(fontSize: 20.0),
               ),
             ),
@@ -40,7 +40,7 @@ class StartPage extends StatelessWidget {
                 );
               },
               child: Text(
-                "Faculty",
+                "Sign Up",
                 style: TextStyle(fontSize: 20.0),
               ),
             ),

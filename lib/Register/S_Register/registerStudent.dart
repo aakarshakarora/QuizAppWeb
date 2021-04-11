@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_app/Login/S_Login/loginStudent.dart';
+import 'package:quiz_app/Login/userLogin.dart';
+
 
 class StudentRegister extends StatefulWidget {
   StudentRegister({Key key}) : super(key: key);
@@ -22,7 +23,7 @@ class _StudentRegisterState extends State<StudentRegister> {
   TextEditingController confirmPwdInputController = new TextEditingController();
 
   TextEditingController contactNumberInputController =
-      new TextEditingController();
+  new TextEditingController();
 
   TextEditingController courseNameController = new TextEditingController();
 
@@ -244,60 +245,70 @@ class _StudentRegisterState extends State<StudentRegister> {
                           confirmPwdInputController.text) {
                         FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
-                                email: emailIdInputController.text,
-                                password: pwdInputController.text)
-                            .then((currentUser) => FirebaseFirestore.instance
+                            email: emailIdInputController.text,
+                            password: pwdInputController.text)
+                            .then((currentUser) =>
+                            FirebaseFirestore.instance
                                 .collection("Student")
                                 .doc(currentUser.user.uid)
                                 .set({
-                                  "UserID": currentUser.user.uid,
-                                  "S_Name": studentNameController.text,
-                                  "Role": role,
-                                  "S_EmailId": emailIdInputController.text,
-                                  "S_ContactNumber":
-                                      contactNumberInputController.text,
-                                  "S_Course": courseNameController.text,
-                                  "S_RegNo": registrationNoController.text,
-                                  "GroupAdded": null,
-                                  "QuizGiven": null,
-                                })
+                              "UserID": currentUser.user.uid,
+                              "S_Name": studentNameController.text,
+                              "Role": role,
+                              "S_EmailId": emailIdInputController.text,
+                              "S_ContactNumber":
+                              contactNumberInputController.text,
+                              "S_Course": courseNameController.text,
+                              "S_RegNo": registrationNoController.text,
+                              "GroupAdded": null,
+                              "QuizGiven": null,
+                            })
                                 .then((result) => {
-                                      sendEmailVerification(),
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  StudentLogin()),
-                                          (_) => false),
-                                      emailIdInputController.clear(),
-                                      pwdInputController.clear(),
-                                      confirmPwdInputController.clear(),
-                                      contactNumberInputController.clear(),
-                                      studentNameController.clear(),
-                                      courseNameController.clear(),
-                                      registrationNoController.clear()
-                                    })
-                                .catchError((err) => print(err)))
-                            .catchError((err) => print(err));
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Error"),
-                                content: Text("The passwords do not match"),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text("Close"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  )
-                                ],
-                              );
-                            });
-                      }
+                            sendEmailVerification(),
+                            FirebaseFirestore.instance
+                                .collection("User")
+                                .doc(currentUser.user.uid)
+                                . set ({
+                            'U_Name':
+                            studentNameController.text.toUpperCase(),
+                            'Role': role, "UserID": currentUser.user.uid,
+
+                            }),
+                                Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UserLogin()),
+                                    (_) => false),
+                            emailIdInputController.clear(),
+                            pwdInputController.clear(),
+                            confirmPwdInputController.clear(),
+                            contactNumberInputController.clear(),
+                            studentNameController.clear(),
+                            courseNameController.clear(),
+                            registrationNoController.clear()
+                            })
+                            .catchError((err) => print(err)))
+                        .catchError((err) => print(err));
+                    } else {
+                    showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                    return AlertDialog(
+                    title: Text("Error"),
+                    content: Text("The passwords do not match"),
+                    actions: <Widget>[
+                    FlatButton(
+                    child: Text("Close"),
+                    onPressed: () {
+                    Navigator.of(context).pop();
+                    },
+                    )
+                    ],
+                    );
+                    });
                     }
+                  }
                   },
                 ),
                 SizedBox(

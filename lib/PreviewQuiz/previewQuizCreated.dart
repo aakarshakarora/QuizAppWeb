@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/PreviewQuiz/previewQuiz.dart';
-
+import 'package:quiz_app/PreviewQuiz/previewQuizDesc.dart';
 
 class ViewQuizDesc extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class _ViewQuizDescState extends State<ViewQuizDesc> {
   final userId = FirebaseAuth.instance.currentUser.uid;
   var firestoreDB = FirebaseFirestore.instance
       .collection('Quiz')
-  //.where("startDate",isLessThan: new DateTime.now())
+      //.where("startDate",isLessThan: new DateTime.now())
       .snapshots();
 
   @override
@@ -71,20 +71,23 @@ class _ViewDetailsState extends State<ViewDetails> {
   @override
   Widget build(BuildContext context) {
     String message;
-    final questionCount = widget.reqDoc.get("QuestionCount");
     final accessCode = widget.reqDoc.get("AccessCode");
+    final questionCount = widget.reqDoc.get("QuestionCount");
+
     final subjectName = widget.reqDoc.get("SubjectName");
-    final maxScore = widget.reqDoc.get("MaxScore");
+    final description = widget.reqDoc.get("Description");
+    final sDate = (widget.reqDoc.get("startDate") as Timestamp).toDate();
+    final eDate = (widget.reqDoc.get("endDate") as Timestamp).toDate();
+
     final startDate =
-    (widget.reqDoc.get("startDate") as Timestamp).toDate().toString();
+        (widget.reqDoc.get("startDate") as Timestamp).toDate().toString();
     final endDate =
-    (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
+        (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
 
-
-
+    final maxScore = widget.reqDoc.get("MaxScore");
 
     message =
-    " Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
+        " Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
 
     return Container(
       padding: const EdgeInsets.all(10),
@@ -155,8 +158,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                 ),
                 ElevatedButton(
                   child: Text('Share Info'),
-                  onPressed: ()  {
-
+                  onPressed: () {
                     final snackBar = SnackBar(
                       content: Text('Information Copied'),
                       action: SnackBarAction(
@@ -165,8 +167,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                       ),
                     );
 
-                    FlutterClipboard.copy(message).then(( value ) =>
-                        print('copied'));
+                    FlutterClipboard.copy(message)
+                        .then((value) => print('copied'));
 
                     // ignore: deprecated_member_use
                     Scaffold.of(context).showSnackBar(snackBar);
@@ -180,8 +182,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                       );
                       // ignore: deprecated_member_use
                       Scaffold.of(context).showSnackBar(snackBar);
-                    };
-
+                    }
+                    ;
                   },
                 ),
                 ElevatedButton(
@@ -189,7 +191,10 @@ class _ViewDetailsState extends State<ViewDetails> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PreviewQuiz(
+                            builder: (context) => PreviewQuizDesc(
+                                description: description,
+                                eDate: eDate,
+                                sDate: sDate,
                                 accessCode: accessCode,
                                 subjectName: subjectName,
                                 questionCount: questionCount,

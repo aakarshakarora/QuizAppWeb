@@ -284,6 +284,15 @@ class _FacultyRegisterState extends State<FacultyRegister> {
                         })
                             .then((result) => {
                           sendEmailVerification(),
+                          FirebaseFirestore.instance
+                              .collection("User")
+                              .doc(currentUser.user.uid)
+                              . set ({
+                            'U_Name':
+                            facultyNameController.text.toUpperCase(),
+                            'Role': role, "UserID": currentUser.user.uid,
+
+                          }),
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
