@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quiz_app/Charts/pieChart.dart';
 import 'package:quiz_app/Dashboard/S_Dashboard/dashboardStudent.dart';
 
 class OldResult extends StatefulWidget {
@@ -78,6 +79,12 @@ class _OldResultState extends State<OldResult> {
                                             accessCode=reqDoc[index].toString().substring(0,5);
                                           });
                                           print(accessCode);
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PieChartDisplay(accessCode)),
+                                          );
 
                                         },
                                       ),

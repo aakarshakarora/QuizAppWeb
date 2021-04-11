@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:quiz_app/CreateQuiz/createGroup.dart';
-import 'package:quiz_app/GenerateExcel/genExcel.dart';
+import 'package:quiz_app/CreateGroup/F_View/createGroup.dart';
+
 import 'package:quiz_app/MyProfile/F_Profile/profileFaculty.dart';
 import 'package:quiz_app/Pages/FuturePage.dart';
 import 'package:quiz_app/Pages/startPage.dart';
 import 'package:quiz_app/PreviewQuiz/previewQuizDesc.dart';
+import 'package:quiz_app/ViewResult/F_View/quizCreatedRecord.dart';
 
 
 
@@ -255,7 +256,7 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CreateExcel()),
+                                  builder: (context) => QuizCreatedRecord()),
                             );
                           }
 

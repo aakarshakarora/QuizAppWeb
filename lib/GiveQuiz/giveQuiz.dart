@@ -216,6 +216,8 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                             print("Start Date: $startTime");
                             print("End Date: $endTime");
                             print("Current Date: $currentTime");
+                            print("Attempted Check: "+attempted.toString());
+                            print("Group Check:"+groupCheck.toString());
 
                             if (attempted == true &&groupCheck==false) {
                               //print("This is being called");
@@ -226,7 +228,7 @@ class _QuizCodeDescState extends State<QuizCodeDesc> {
                               );
                             }
 
-                            else if (attempted == false &&groupCheck==false) {
+                            else if (attempted == false &&groupCheck==true) {
                               if (startTime <= currentTime && endTime >= currentTime)
                               {
                                 FirebaseFirestore.instance

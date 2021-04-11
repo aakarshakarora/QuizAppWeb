@@ -201,7 +201,6 @@ class _StudentRegisterState extends State<StudentRegister> {
                       SizedBox(
                         height: 15,
                       ),
-
                       SizedBox(
                         height: 18,
                       ),
@@ -259,6 +258,8 @@ class _StudentRegisterState extends State<StudentRegister> {
                                       contactNumberInputController.text,
                                   "S_Course": courseNameController.text,
                                   "S_RegNo": registrationNoController.text,
+                                  "GroupAdded": null,
+                                  "QuizGiven": null,
                                 })
                                 .then((result) => {
                                       sendEmailVerification(),

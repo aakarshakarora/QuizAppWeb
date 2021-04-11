@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/Pages/startPage.dart';
 
-import 'CreateQuiz/createGroup.dart';
+import 'CreateGroup/F_View/createGroup.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

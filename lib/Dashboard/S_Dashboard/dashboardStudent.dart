@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:quiz_app/CreateGroup/S_View/viewGroup.dart';
 import 'package:quiz_app/MyProfile/S_Profile/profileStudent.dart';
 import 'package:quiz_app/Pages/FuturePage.dart';
 import 'package:quiz_app/Pages/startPage.dart';
 import 'package:quiz_app/ViewResult/S_View/oldResult.dart';
-import 'package:quiz_app/ViewResult/S_View/studentResult.dart';
+
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,10 +29,11 @@ class _StudentDashboardState extends State<StudentDashboard> {
     }
   }
 
-  final titles = ['Give Quiz', 'Past Quiz Score'];
+  final titles = ['Give Quiz', 'Past Quiz Score','View Groups'];
   final titleIcon = [
     Icon(Icons.event_note),
     Icon(Icons.update),
+    Icon(Icons.group)
   ];
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String currentUser;
@@ -244,6 +246,15 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                   builder: (context) => EnterCode()),
                             );
                           }
+
+                          if (index == 2) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ViewGroups()),
+                            );
+                          }
+
                           if (index == 1) {
                             Navigator.push(
                               context,

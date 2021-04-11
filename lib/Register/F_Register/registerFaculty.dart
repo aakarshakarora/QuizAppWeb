@@ -280,6 +280,7 @@ class _FacultyRegisterState extends State<FacultyRegister> {
                           contactNumberInputController.text,
                           "F_EmpID": empIDController.text,
                           "F_DeptNm": deptNameController.text,
+
                         })
                             .then((result) => {
                           sendEmailVerification(),

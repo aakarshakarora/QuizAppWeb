@@ -82,7 +82,7 @@ class _AttemptQuizState extends State<AttemptQuiz> with WidgetsBindingObserver {
           .collection('Student')
           .doc(uId)
           .update({
-        "GroupAdded": FieldValue.arrayUnion([widget.accessCode+" "+widget.subjectName])
+        "QuizGiven": FieldValue.arrayUnion([widget.accessCode+" "+widget.subjectName])
       });
 
       FirebaseFirestore.instance
@@ -165,7 +165,7 @@ class _AttemptQuizState extends State<AttemptQuiz> with WidgetsBindingObserver {
                       .collection('Student')
                       .doc(uId)
                       .update({
-                    "GroupAdded": FieldValue.arrayUnion([widget.accessCode+" "+widget.subjectName])
+                    "QuizGiven": FieldValue.arrayUnion([widget.accessCode+" "+widget.subjectName])
                   });
 
                   FirebaseFirestore.instance
@@ -300,7 +300,7 @@ class _AttemptQuizState extends State<AttemptQuiz> with WidgetsBindingObserver {
                                         .collection('Student')
                                         .doc(uId)
                                         .update({
-                                      "GroupAdded": FieldValue.arrayUnion([widget.accessCode+" "+widget.subjectName])
+                                      "QuizGiven": FieldValue.arrayUnion([widget.accessCode+" "+widget.subjectName])
                                     });
                                     FirebaseFirestore.instance
                                         .collection('Quiz')
