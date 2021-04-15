@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:quiz_app/Dashboard/S_Dashboard/dashboardStudent.dart';
 import 'package:quiz_app/Pages/startPage.dart';
 import 'package:quiz_app/Register/S_Register/registerStudent.dart';
 import 'package:quiz_app/SplashScreen/splash.dart';
@@ -108,7 +107,7 @@ class _UserLoginState extends State<UserLogin> {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            'Registered and Verified Student can Login',
+                            'Registered and Verified Users can Login',
                             style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 20,
@@ -139,7 +138,7 @@ class _UserLoginState extends State<UserLogin> {
                               return 'Field Required';
                             }
                             if (!RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                 .hasMatch(value)) {
                               return 'Please enter a valid email address';
                             }
@@ -191,7 +190,7 @@ class _UserLoginState extends State<UserLogin> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
+                              BorderRadius.all(Radius.circular(30)),
                               color: Colors.deepPurpleAccent,
                             ),
                             child: MaterialButton(
@@ -257,8 +256,8 @@ class _UserLoginState extends State<UserLogin> {
                             _success == null
                                 ? ''
                                 : (_success
-                                    ? 'Successfully signed in ' + _userEmail
-                                    : 'Sign in failed'),
+                                ? 'Successfully signed in ' + _userEmail
+                                : 'Sign in failed'),
                             style: TextStyle(color: Colors.red),
                           ),
                         )
