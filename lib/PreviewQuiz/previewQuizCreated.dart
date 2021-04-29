@@ -2,7 +2,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_app/PreviewQuiz/previewQuiz.dart';
+import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:quiz_app/PreviewQuiz/previewQuizDesc.dart';
 
 class ViewQuizDesc extends StatefulWidget {
@@ -157,33 +157,13 @@ class _ViewDetailsState extends State<ViewDetails> {
                   ],
                 ),
                 ElevatedButton(
-                  child: Text('Share Info'),
-                  onPressed: () {
-                    final snackBar = SnackBar(
-                      content: Text('Information Copied'),
-                      action: SnackBarAction(
-                        label: 'Okay',
-                        onPressed: () {},
-                      ),
-                    );
-
-                    FlutterClipboard.copy(message)
-                        .then((value) => print('copied'));
-
-                    // ignore: deprecated_member_use
-                    Scaffold.of(context).showSnackBar(snackBar);
-                    {
-                      final snackBar = SnackBar(
-                        content: Text('Information Copied'),
-                        action: SnackBarAction(
-                          label: 'Okay',
-                          onPressed: () {},
-                        ),
-                      );
-                      // ignore: deprecated_member_use
-                      Scaffold.of(context).showSnackBar(snackBar);
+                  child: Text('Share Quiz'),
+                  onPressed: () async {
+                    var response =
+                    await FlutterShareMe().shareToSystem(msg: message);
+                    if (response == 'success') {
+                      print('navigate success');
                     }
-                    ;
                   },
                 ),
                 ElevatedButton(
