@@ -61,21 +61,25 @@ class _AttemptQuizState extends State<AttemptQuiz> with WidgetsBindingObserver {
 
     print(document.onFullscreenChange.take(2));
     print(document.fullscreenEnabled == true);
-    document.onFullscreenChange.listen((event) {
-      document.addEventListener("visibilitychange", fxTest());
-    });
+    // document.onFullscreenChange.listen((event) {
+    //   document.addEventListener("visibilitychange", fxTest());
+    // });
     document.onAbort.listen((event) {
       document.addEventListener("visibilitychange", fxTest());
     });
-    document.onFullscreenError.listen((event) {
+    document.onVisibilityChange.listen((event) {
       document.addEventListener("visibilitychange", fxTest());
     });
+    // document.onFullscreenError.listen((event) {
+    //   document.addEventListener("visibilitychange", fxTest());
+    // });
   }
 
   dynamic fxTest() {
     if (document.visibilityState == 'hidden' ||
         document.visibilityState == 'prerender') {
       inactive++;
+
       print(document.visibilityState);
 
       FirebaseFirestore.instance
@@ -107,7 +111,8 @@ class _AttemptQuizState extends State<AttemptQuiz> with WidgetsBindingObserver {
                   )),
         );
       });
-    } else {
+    }
+    else {
       print(document.visibilityState);
       print(document.onVisibilityChange.listen((event) {
         document.addEventListener("visibilitychange", fxTest());
@@ -118,23 +123,32 @@ class _AttemptQuizState extends State<AttemptQuiz> with WidgetsBindingObserver {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
 
+
+    WidgetsBinding.instance.addObserver(this);
+    uId = getUserID();
     window.onLoad;
+    document.fullscreenEnabled;
     document.addEventListener("visibilitychange", fxTest());
     document.onVisibilityChange;
 
     print(document.onFullscreenChange.take(2));
     print(document.fullscreenEnabled == true);
-    document.onFullscreenChange.listen((event) {
-      document.addEventListener("visibilitychange", fxTest());
-    });
+    // document.onFullscreenChange.listen((event) {
+    //   document.addEventListener("visibilitychange", fxTest());
+    // });
     document.onAbort.listen((event) {
       document.addEventListener("visibilitychange", fxTest());
+
     });
-    document.onFullscreenError.listen((event) {
+
+    document.onVisibilityChange.listen((event) {
       document.addEventListener("visibilitychange", fxTest());
     });
+    // document.onFullscreenError.listen((event) {
+    //   document.addEventListener("visibilitychange", fxTest());
+    // });
+    super.dispose();
   }
 
   @override

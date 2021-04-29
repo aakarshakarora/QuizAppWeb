@@ -14,7 +14,7 @@ class _ViewQuizDescState extends State<ViewQuizDesc> {
   final userId = FirebaseAuth.instance.currentUser.uid;
   var firestoreDB = FirebaseFirestore.instance
       .collection('Quiz')
-      //.where("startDate",isLessThan: new DateTime.now())
+  //.where("startDate",isLessThan: new DateTime.now())
       .snapshots();
 
   @override
@@ -80,14 +80,14 @@ class _ViewDetailsState extends State<ViewDetails> {
     final eDate = (widget.reqDoc.get("endDate") as Timestamp).toDate();
 
     final startDate =
-        (widget.reqDoc.get("startDate") as Timestamp).toDate().toString();
+    (widget.reqDoc.get("startDate") as Timestamp).toDate().toString();
     final endDate =
-        (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
+    (widget.reqDoc.get("endDate") as Timestamp).toDate().toString();
 
     final maxScore = widget.reqDoc.get("MaxScore");
 
     message =
-        " Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
+    " Subject Name: $subjectName \n Question Count: $questionCount \n Max Score: $maxScore  \n\n Start Time: $startDate \n End Date: $endDate \n\n Access Code: $accessCode";
 
     return Container(
       padding: const EdgeInsets.all(10),

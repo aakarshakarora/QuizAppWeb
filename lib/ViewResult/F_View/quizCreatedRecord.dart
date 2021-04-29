@@ -175,11 +175,11 @@ class _QuizCreatedRecordState extends State<QuizCreatedRecord> {
     });
 
     sheet
-        .getRangeByName('A1:E1')
+        .getRangeByName('A1:H1')
         .cellStyle
         .backColor = '#FFFF00';
     sheet
-        .getRangeByName('A1:E1')
+        .getRangeByName('A1:H1')
         .cellStyle
         .bold = true;
 

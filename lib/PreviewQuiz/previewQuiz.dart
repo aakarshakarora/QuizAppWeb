@@ -74,66 +74,68 @@ class _PreviewQuizState extends State<PreviewQuiz> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: reqDocs.length,
                     itemBuilder: (ctx, index) {
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: (BorderRadius.circular(20)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            PreviewQuestionTile(
-                              index: index,
-                              reqDoc: reqDocs[index],
-                              correctAnswerMarks:
-                                  (widget.maximumScore) / (reqDocs.length),
-                              code: widget.accessCode,
-                            ),
-                            SizedBox(
-                              height: 100,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                index == 0
-                                    ? Container()
-                                    : roundedButton(
-                                        color: Colors.blue,
-                                        context: context,
-                                        text: "Prev",
-                                        onPressed: () {
-                                          print("Prev Button is pressed!");
-                                          print(index);
-                                          print(widget.questionCount);
-                                          pageController.animateToPage(
-                                              index - 1,
-                                              duration:
-                                                  Duration(milliseconds: 200),
-                                              curve: Curves.easeIn);
-                                        }),
-                                index != widget.questionCount - 1
-                                    ? roundedButton(
-                                        color: Colors.blue,
-                                        context: context,
-                                        text: "Next",
-                                        onPressed: () {
-                                          print("Next Button is pressed!");
-                                          print(index);
-                                          print(widget.questionCount);
+                      return SingleChildScrollView(
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: (BorderRadius.circular(20)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PreviewQuestionTile(
+                                index: index,
+                                reqDoc: reqDocs[index],
+                                correctAnswerMarks:
+                                (widget.maximumScore) / (reqDocs.length),
+                                code: widget.accessCode,
+                              ),
+                              SizedBox(
+                                height: 100,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  index == 0
+                                      ? Container()
+                                      : roundedButton(
+                                      color: Colors.blue,
+                                      context: context,
+                                      text: "Prev",
+                                      onPressed: () {
+                                        print("Prev Button is pressed!");
+                                        print(index);
+                                        print(widget.questionCount);
+                                        pageController.animateToPage(
+                                            index - 1,
+                                            duration:
+                                            Duration(milliseconds: 200),
+                                            curve: Curves.easeIn);
+                                      }),
+                                  index != widget.questionCount - 1
+                                      ? roundedButton(
+                                      color: Colors.blue,
+                                      context: context,
+                                      text: "Next",
+                                      onPressed: () {
+                                        print("Next Button is pressed!");
+                                        print(index);
+                                        print(widget.questionCount);
 
-                                          pageController.animateToPage(
-                                              index + 1,
-                                              duration:
-                                                  Duration(milliseconds: 200),
-                                              curve: Curves.bounceInOut);
-                                        })
-                                    : Container(),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                          ],
+                                        pageController.animateToPage(
+                                            index + 1,
+                                            duration:
+                                            Duration(milliseconds: 200),
+                                            curve: Curves.bounceInOut);
+                                      })
+                                      : Container(),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -154,9 +156,9 @@ class PreviewQuestionTile extends StatefulWidget {
 
   PreviewQuestionTile(
       {@required this.reqDoc,
-      @required this.index,
-      @required this.correctAnswerMarks,
-      @required this.code});
+        @required this.index,
+        @required this.correctAnswerMarks,
+        @required this.code});
 
   @override
   _PreviewQuestionTileState createState() => _PreviewQuestionTileState();
@@ -166,34 +168,13 @@ class _PreviewQuestionTileState extends State<PreviewQuestionTile>
     with AutomaticKeepAliveClientMixin {
   String selectedValue;
 
-  String option1, option2, option3, option4, ques, docID, code;
+  String option1, option2, option3, option4, ques, docID, code,imageURL;
+  bool imagePresent;
 
   List<String> options = [];
 
   @override
   bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    options = [
-      widget.reqDoc.get("01"),
-      widget.reqDoc.get("02"),
-      widget.reqDoc.get("03"),
-      widget.reqDoc.get("04"),
-    ];
-
-    option1 = widget.reqDoc.get("01");
-    option2 = widget.reqDoc.get("02");
-    option3 = widget.reqDoc.get("03");
-    option4 = widget.reqDoc.get("04");
-    ques = widget.reqDoc.get("Ques");
-    print(widget.reqDoc.documentID);
-    docID = widget.reqDoc.documentID;
-    code = widget.code;
-    options.shuffle();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -204,7 +185,23 @@ class _PreviewQuestionTileState extends State<PreviewQuestionTile>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    options = [
+      widget.reqDoc.get("01"),
+      widget.reqDoc.get("02"),
+      widget.reqDoc.get("03"),
+      widget.reqDoc.get("04"),
+    ];
+    options.shuffle();
+    option1 = widget.reqDoc.get("01");
+    option2 = widget.reqDoc.get("02");
+    option3 = widget.reqDoc.get("03");
+    option4 = widget.reqDoc.get("04");
+    ques = widget.reqDoc.get("Ques");
+    imagePresent = widget.reqDoc.get("imgPresent");
+    imageURL = widget.reqDoc.get("imgURL");
+    print(widget.reqDoc.documentID);
+    docID = widget.reqDoc.documentID;
+    code = widget.code;
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -212,16 +209,25 @@ class _PreviewQuestionTileState extends State<PreviewQuestionTile>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Q${widget.index + 1} ${widget.reqDoc.get("Ques")}",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 20
-          ),),
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 20
+            ),),
+          widget.reqDoc.get("imgURL") == null
+              ? CircularProgressIndicator()
+              : Container(
+            width: MediaQuery.of(context).size.width,
+            child: Image.network(
+                widget.reqDoc.get("imgURL")),
+          ),
           ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: 4,
               itemBuilder: (ctx, index) {
+
                 return Row(
+
                   children: [
                     Radio(
                         value: options[index],
@@ -244,7 +250,7 @@ class _PreviewQuestionTileState extends State<PreviewQuestionTile>
                     context,
                     MaterialPageRoute(
                         builder: (context) => EditQuesAns(option1, option2,
-                            option3, option4, ques, docID, code)),
+                            option3, option4, ques, docID, code,imagePresent,imageURL)),
                   );
                 },
                 //child: Text("Edit ")),
@@ -257,10 +263,10 @@ class _PreviewQuestionTileState extends State<PreviewQuestionTile>
 }
 
 class EditQuesAns extends StatefulWidget {
-  final String option1, option2, option3, option4, ques, docId, code;
-
+  final String option1, option2, option3, option4, ques, docId, code,imgURL;
+  final bool imgPresent;
   EditQuesAns(this.option1, this.option2, this.option3, this.option4, this.ques,
-      this.docId, this.code);
+      this.docId, this.code,this.imgPresent,this.imgURL);
 
   @override
   _EditQuesAnsState createState() => _EditQuesAnsState();
@@ -270,8 +276,9 @@ class _EditQuesAnsState extends State<EditQuesAns> {
   String option1, option2, option3, option4, ques;
 
   TextEditingController q, o1, o2, o3, o4;
+  TextEditingController _imageLink = TextEditingController();
 
-
+  bool imagePresent;
 
   @override
   void initState() {
@@ -280,8 +287,34 @@ class _EditQuesAnsState extends State<EditQuesAns> {
     o2 = TextEditingController()..text = widget.option2;
     o3 = TextEditingController()..text = widget.option3;
     o4 = TextEditingController()..text = widget.option4;
-
+    _imageLink = TextEditingController()..text = widget.imgURL;
+    imagePresent = widget.imgPresent;
     super.initState();
+  }
+
+  _buildImageCheck() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5),
+      child: TextFormField(
+        style: TextStyle(
+            fontFamily: 'Poppins', fontSize: 17, fontWeight: FontWeight.bold),
+        controller: _imageLink,
+        decoration: InputDecoration(
+          labelText: 'Enter Image URL:',
+          labelStyle: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 17,
+          ),
+        ),
+        autofocus: false,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Field Required';
+          }
+          return null;
+        },
+      ),
+    );
   }
 
   @override
@@ -294,39 +327,70 @@ class _EditQuesAnsState extends State<EditQuesAns> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              Container(
+                padding: EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Yes"),
+                    Radio<bool>(
+                        groupValue: imagePresent,
+                        value: true,
+                        onChanged: (v) {
+                          setState(() {
+                            imagePresent = v;
+                          });
+                        }),
+                    Text("No"),
+                    Radio<bool>(
+                        groupValue: imagePresent,
+                        value: false,
+                        onChanged: (v) {
+                          setState(() {
+                            imagePresent = v;
+                          });
+                        }),
+                  ],
+                ),
+              ),
+              imagePresent == true
+                  ? _buildImageCheck()
+                  : Container(
+                height: 0,
+              ),
               TextField(
                 controller: q,
                 decoration: InputDecoration(
                     prefixText: 'Question: ',
                     prefixStyle:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
               ),
               TextField(
                 decoration: InputDecoration(
                     prefixText: 'Option1(Correct Answer): ',
                     prefixStyle:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                 controller: o1,
               ),
               TextField(
                 decoration: InputDecoration(
                     prefixText: 'Option2: ',
                     prefixStyle:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                 controller: o2,
               ),
               TextField(
                 decoration: InputDecoration(
                     prefixText: 'Option3: ',
                     prefixStyle:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                 controller: o3,
               ),
               TextField(
                 decoration: InputDecoration(
                     prefixText: 'Option4: ',
                     prefixStyle:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                 controller: o4,
               ),
               SizedBox(
@@ -337,17 +401,21 @@ class _EditQuesAnsState extends State<EditQuesAns> {
                   context: context,
                   text: "Update",
                   onPressed: () {
-                    FirebaseFirestore.instance
-                        .collection('Quiz')
-                        .doc(widget.code)
-                        .collection(widget.code)
-                        .doc(widget.docId)
-                        .update({
-                      "01": o1.text,
-                      "02": o2.text,
-                      "03": o3.text,
-                      "04": o4.text,
-                      "Ques": q.text,
+                    setState(() {
+                      FirebaseFirestore.instance
+                          .collection('Quiz')
+                          .doc(widget.code)
+                          .collection(widget.code)
+                          .doc(widget.docId)
+                          .update({
+                        "01": o1.text,
+                        "02": o2.text,
+                        "03": o3.text,
+                        "04": o4.text,
+                        "Ques": q.text,
+                        "imgPresent": imagePresent,
+                        "imgURL": _imageLink.text
+                      });
                     });
                     Navigator.pop(
                       context,

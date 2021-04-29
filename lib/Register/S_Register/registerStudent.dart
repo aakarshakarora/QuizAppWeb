@@ -246,6 +246,7 @@ class _StudentRegisterState extends State<StudentRegister> {
                             .createUserWithEmailAndPassword(
                                 email: emailIdInputController.text,
                                 password: pwdInputController.text)
+
                             .then((currentUser) => FirebaseFirestore.instance
                                 .collection("Student")
                                 .doc(currentUser.user.uid)
