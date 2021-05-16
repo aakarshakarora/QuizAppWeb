@@ -15,7 +15,7 @@ class EditGroup extends StatefulWidget {
 class _EditGroupState extends State<EditGroup> {
   String currentUser;
 
-  final titles = [ 'Delete Students','Add Students'];
+  final titles = [ 'Remove Students','Add Students'];
 
   final titleIcon = [
     Icon(Icons.delete),

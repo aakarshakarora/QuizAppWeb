@@ -36,7 +36,7 @@ class _DeleteStudentState extends State<DeleteStudent> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.blue,
-            title: Text("Delete Student from " + widget.groupName),
+            title: Text("Remove Student from " + widget.groupName),
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
@@ -207,7 +207,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                               },
                               child: Icon(Icons.delete),
                             )),
-                        Text("Add User",
+                        Text("Remove User",
                           style: TextStyle(
                               fontSize: 13
                           ),)
