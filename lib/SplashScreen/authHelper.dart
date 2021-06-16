@@ -22,7 +22,7 @@ class UserHelper {
         //"buildNumber": buildNumber,
       });
     } else {
-      await _db.collection("users").doc(user.uid).set(userData);
+      await _db.collection("User").doc(user.uid).set(userData);
     }
   }
 
